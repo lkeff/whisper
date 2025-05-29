@@ -20,8 +20,57 @@ from discord.ext import audiorec
 from audio_handler import AudioHandler
 from whisper_integration import WhisperTranscriber
 
+import discord
+import whisper
+import asyncio
+import os
+
+TOKEN = "YOUR_DISCORD_BOT_TOKEN"
+
+intents = discord.Intents.default()
+intents.message_content = True
+client = discord.Client(intents=intents)
+
+whisper_model = whisper.load_model("base")  # or "small", "medium", "large"
+
+@client.event
+async def on_ready():
+    print(f'Logged in as {client.user}')
+
+@client.event
+async def on_message(message):
+    if message.author == client.user:
+        return
+
+    # If the message has an audio attachment
+    if message.attachments:
+        for attachment in message.attachments:
+            if attachment.filename.endswith(('.mp3', '.wav', '.m4a', '.ogg')):
+                file_path = f"temp_{attachment.filename}"
+                await attachment.save(file_path)
+
+                # Transcribe with Whisper
+                result = whisper_model.transcribe(file_path)
+                transcription = result["text"]
+
+                await message.channel.send(f"Transcription: {transcription}")
+
+                os.remove(file_path)
+                return
+
+    # Optional: Command to prompt bot to join a voice channel and record (more complex)
+    if message.content.startswith("!join"):
+        if message.author.voice:
+            channel = message.author.voice.channel
+            await channel.connect()
+            await message.channel.send("Joined voice channel! (Recording not implemented here)")
+        else:
+            await message.channel.send("You are not in a voice channel.")
+
+client.run("1370657808055406612")
+
 load_dotenv()
-TOKEN = os.getenv("DISCORD_TOKEN")
+TOKEN = os.getenv("1370657808055406612")
 CHANNEL_ID = 123456789012345678  # <-- Replace with your moderator channel ID
 
 intents = discord.Intents.default()
