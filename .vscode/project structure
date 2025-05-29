@@ -1,0 +1,9 @@
+whisper-discord-bot/
+│
+├── bot.py                # Main bot logic and event handlers
+├── audio_handler.py      # Audio capture and streaming logic
+├── whisper_integration.py# Whisper transcription logic
+├── moderation.py         # Moderation rules and triggers
+├── soundboard.py         # Soundboard logic
+├── requirements.txt      # Python dependencies
+└── README.md             # Setup and usage instructions
