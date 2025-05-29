@@ -10,3 +10,4 @@ openai-whisper
 pydub
 numpy
 soundfile
+discord-ext-audiorec
