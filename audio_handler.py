@@ -16,3 +16,13 @@ class AudioHandler:
             if not audio_chunk:
                 break
             asyncio.create_task(self.process_audio_chunk(audio_chunk))
+
+            class AudioHandler:
+                def __init__(self, whisper_transcriber, deepspeech_transcriber):
+                    self.whisper_transcriber = whisper_transcriber
+                    self.deepspeech_transcriber = deepspeech_transcriber
+            
+                async def process_audio_chunk(self, audio_chunk):
+                    whisper_text = await self.whisper_transcriber.transcribe(audio_chunk)
+                    deepspeech_text = await self.deepspeech_transcriber.transcribe(audio_chunk)
+                    return whisper_text, deepspeech_text
