@@ -53,8 +53,17 @@ async def on_message(message):
                 result = whisper_model.transcribe(file_path)
                 transcription = result["text"]
 
-                await message.channel.send(f"Transcription: {transcription}")
+# Send the transcription as a message
+transcription_message = await message.channel.send(f"Transcription: {transcription}")
 
+# Create a thread for discussion about this transcription
+thread = await transcription_message.create_thread(
+    name=f"Discussion: {transcription[:30]}...",  # Thread name, truncated for Discord's limit
+    auto_archive_duration=60  # Auto-archive after 1 hour of inactivity (can be 60, 1440, 4320, or 10080)
+)
+
+# Optionally, send a prompt in the thread
+await thread.send("Discuss this transcription here!")
                 os.remove(file_path)
                 return
 
@@ -123,7 +132,7 @@ async def on_audio(vc, user, audio):
 if __name__ == "__main__":
     bot.run("1370657808055406612")
 
-dclient = discord.Client()
+discordclient = discord.Client()
 
 class WhisperTranscriber:
     def __init__(self, model_size="base"):
@@ -145,7 +154,7 @@ class WhisperTranscriber:
 
 
 load_dotenv()
-TOKEN = os.getenv("DISCORD_TOKEN")
+TOKEN = os.getenv("1370657808055406612")
 
 intents = discord.Intents.default()
 intents.message_content = True
