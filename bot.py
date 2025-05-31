@@ -25,7 +25,7 @@ import whisper
 import asyncio
 import os
 
-TOKEN = "YOUR_DISCORD_BOT_TOKEN"
+TOKEN = "1370657808055406612"
 
 intents = discord.Intents.default()
 intents.message_content = True
